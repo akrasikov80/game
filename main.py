@@ -2,8 +2,32 @@ from tkinter import *
 import random
 import time
 
+
 class Game:
     def __init__(self):
+        self.tk = Tk()
+        self.tk.title("Игра")
+        self.tk.resizable(0, 0)
+        self.tk.wm_attributes("-topmost", 1)
+        self.canvas = Canvas(self.tk, width=500, height=400, bd=2, highlightthickness=2)
+        self.canvas.pack()
+        self.tk.update()
+        self.paddle = Paddle(self.canvas, "blue")
+        self.ball = Ball(self.canvas, self.paddle, "red")
+
+    def startgame(self):  # обязательно писать def startgame(self) -> None ?
+        while 1:
+            if self.ball.hit_bottom == False:
+                self.ball.draw()
+                self.paddle.draw()
+
+            else:
+                self.ball.hit_bottom = False
+                self.ball.canvas.move(self.ball.id, 0, -self.ball.canvas_height)
+
+            self.tk.update_idletasks()
+            self.tk.update()
+            time.sleep(0.01)
 
 
 class Ball:
@@ -67,27 +91,6 @@ class Paddle:
         self.x = 2
 
 
-tk = Tk()
-tk.title("Игра")
-tk.resizable(0, 0)
-tk.wm_attributes("-topmost", 1)
-canvas = Canvas(tk, width=500, height=400, bd=2, highlightthickness=2)
-canvas.pack()
-tk.update()
-
-paddle = Paddle(canvas, "blue")
-ball = Ball(canvas, paddle, "red")
-
-while 1:
-
-    if ball.hit_bottom == False:
-        ball.draw()
-        paddle.draw()
-
-    else:
-        ball.hit_bottom = False
-        ball.canvas.move(ball.id, 0, -ball.canvas_height)
-
-    tk.update_idletasks()
-    tk.update()
-    time.sleep(0.01)
+if __name__ == "__main__":
+    mygame = Game()
+    mygame.startgame()
